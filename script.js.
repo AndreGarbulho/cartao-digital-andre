@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const numeroWhatsApp = "5511959434285";
+  const numero = "5511959434285";
 
   const formularios = {
     empresarial: document.getElementById("formEmpresarial"),
@@ -7,82 +7,74 @@ document.addEventListener("DOMContentLoaded", function () {
     troca: document.getElementById("formTroca")
   };
 
-  function fecharFormularios() {
-    Object.values(formularios).forEach(function (formulario) {
-      formulario.hidden = true;
-    });
-  }
+  document.addEventListener("click", function (evento) {
+    const botao = evento.target.closest("[data-abrir], [data-voltar]");
 
-  document.querySelectorAll("[data-abrir]").forEach(function (botao) {
-    botao.addEventListener("click", function () {
-      fecharFormularios();
+    if (!botao) return;
 
-      const escolhido = formularios[botao.dataset.abrir];
-
-      if (escolhido) {
-        escolhido.hidden = false;
-        escolhido.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    });
-  });
-
-  document.querySelectorAll("[data-voltar]").forEach(function (botao) {
-    botao.addEventListener("click", function () {
-      fecharFormularios();
+    if (botao.hasAttribute("data-voltar")) {
+      Object.values(formularios).forEach(function (form) {
+        if (form) form.hidden = true;
+      });
 
       document.getElementById("cotacao").scrollIntoView({
         behavior: "smooth",
         block: "start"
       });
+      return;
+    }
+
+    const escolhido = formularios[botao.getAttribute("data-abrir")];
+
+    if (!escolhido) {
+      alert("Não encontrei o formulário. Confira o index.html.");
+      return;
+    }
+
+    Object.values(formularios).forEach(function (form) {
+      if (form) form.hidden = true;
+    });
+
+    escolhido.hidden = false;
+    escolhido.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
     });
   });
 
-  Object.entries(formularios).forEach(function ([tipo, formulario]) {
-    if (!formulario) return;
+  Object.keys(formularios).forEach(function (tipo) {
+    const form = formularios[tipo];
+    if (!form) return;
 
-    formulario.addEventListener("submit", function (evento) {
+    form.addEventListener("submit", function (evento) {
       evento.preventDefault();
 
-      const campos = new FormData(formulario);
-      const obter = function (nome) {
-        return (campos.get(nome) || "").toString().trim() || "Não informado";
-      };
+      if (!form.reportValidity()) return;
 
-      const titulos = {
+      const dados = new FormData(form);
+      const linhas = {
         empresarial: "Cotação de plano empresarial",
         semCnpj: "Cotação de plano sem CNPJ",
         troca: "Solicitação de troca de plano"
       };
 
-      const linhas = [
-        "Olá, Andre! Gostaria de solicitar atendimento.",
-        "",
-        titulos[tipo],
-        "",
-        "CNPJ: " + obter("cnpj"),
-        "Formação acadêmica/curso: " + obter("formacao"),
-        "Plano atual: " + obter("planoAtual"),
-        "Beneficiários e idades: " + obter("beneficiarios"),
-        "Região/cidade: " + obter("regiao"),
-        "Hospitais e laboratórios preferidos: " + obter("preferencias"),
-        "O que gostaria de melhorar: " + obter("motivo")
-      ];
+      let mensagem = "Olá, Andre! Gostaria de solicitar uma cotação.\n";
+      mensagem += "\n" + linhas[tipo] + "\n";
 
-      const mensagem = linhas.join("\n");
-      const url = "https://wa.me/" + numeroWhatsApp +
-        "?text=" + encodeURIComponent(mensagem);
+      dados.forEach(function (valor, campo) {
+        mensagem += "\n" + campo + ": " + valor;
+      });
 
-      window.open(url, "_blank");
+      window.open(
+        "https://wa.me/" + numero + "?text=" +
+        encodeURIComponent(mensagem),
+        "_blank"
+      );
     });
   });
 
   const ano = document.getElementById("year");
-  if (ano) {
-    ano.textContent = new Date().getFullYear();
-  }
+  if (ano) ano.textContent = new Date().getFullYear();
 
   const compartilhar = document.getElementById("shareButton");
 
@@ -97,15 +89,13 @@ document.addEventListener("DOMContentLoaded", function () {
       if (navigator.share) {
         try {
           await navigator.share(dados);
-        } catch (erro) {
-          // O usuário pode cancelar o compartilhamento.
-        }
+        } catch (erro) {}
       } else {
         try {
           await navigator.clipboard.writeText(dados.url);
           alert("Link do cartão copiado!");
         } catch (erro) {
-          alert("Copie o link pela barra do navegador.");
+          alert("Copie o link do cartão pela barra do navegador.");
         }
       }
     });
