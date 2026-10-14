@@ -5,56 +5,133 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10213b">
   <meta name="description" content="Consultoria em planos de saúde para você, sua família e sua empresa.">
-  <title>André Linares | Corretor de Planos de Saúde</title>
+  <title>Andre Linares Garbulho | Corretor de Planos de Saúde</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
   <main class="page-bg">
     <div class="container">
+
       <section class="hero glass">
         <div class="profile-photo">
-          <img src="foto-andre.jpg" alt="Foto profissional de André Linares"
-               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="foto-andre.jpg" alt="Foto profissional de Andre Linares Garbulho"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <div class="photo-fallback" style="display:none;">AL</div>
         </div>
-
         <p>CONSULTORIA EM SAÚDE</p>
-        <h1>Andre Linares Garbulho</h1>
+        <h1>André Linares Garbulho</h1>
         <h2>Corretor de Planos de Saúde</h2>
-        <p>Encontre o plano ideal para você, sua família ou sua empresa.</p>
-
+        <p>Encontre opções para você, sua família ou sua empresa.</p>
         <a class="main-whatsapp" href="https://wa.me/5511959434285"
-           target="_blank" rel="noopener noreferrer">
-          Falar comigo pelo WhatsApp
-        </a>
+          target="_blank" rel="noopener noreferrer">Falar comigo pelo WhatsApp</a>
       </section>
 
-      <section class="glass">
+      <section class="glass" id="cotacao">
         <h2>Como posso ajudar?</h2>
+        <p>Escolha o atendimento que combina com você.</p>
+
         <div class="service-card">
-          <h3>Planos individuais e familiares</h3>
-          <p>Opções para cuidar de você e de quem você ama.</p>
-          <a href="#" data-message="Olá! Gostaria de conhecer planos de saúde individuais e familiares.">Consultar opções</a>
+          <h3>Plano empresarial — tenho CNPJ</h3>
+          <p>Para empresas, profissionais e seus beneficiários.</p>
+          <button type="button" class="main-whatsapp"
+            data-abrir="empresarial">Solicitar cotação empresarial</button>
         </div>
 
         <div class="service-card">
-          <h3>Planos empresariais (PME)</h3>
-          <p>Alternativas para empresas e seus colaboradores.</p>
-          <a href="#" data-message="Olá! Gostaria de conhecer planos de saúde empresariais PME.">Consultar opções PME</a>
+          <h3>Quero contratar sem CNPJ</h3>
+          <p>Vamos conhecer seu perfil e verificar as opções disponíveis.</p>
+          <button type="button" class="main-whatsapp"
+            data-abrir="semCnpj">Encontrar meu plano</button>
         </div>
 
         <div class="service-card">
-          <h3>Troca de plano de saúde</h3>
-          <p>Vamos avaliar as alternativas disponíveis para o seu perfil.</p>
-          <a href="#" data-message="Olá! Quero avaliar opções para trocar meu plano de saúde.">Avaliar meu plano</a>
+          <h3>Quero trocar meu plano atual</h3>
+          <p>Vamos avaliar alternativas de acordo com suas necessidades.</p>
+          <button type="button" class="main-whatsapp"
+            data-abrir="troca">Avaliar troca de plano</button>
         </div>
 
-        <div class="service-card">
-          <h3>Orçamentos e dúvidas</h3>
-          <p>Converse comigo para encontrar uma opção adequada às suas necessidades.</p>
-          <a href="#" data-message="Olá, André! Gostaria de solicitar um orçamento de plano de saúde.">Solicitar orçamento</a>
-        </div>
+        <form id="formEmpresarial" class="form-cotacao" hidden>
+          <h2>Cotação empresarial</h2>
+
+          <label for="cnpj">Qual é o CNPJ?</label>
+          <input id="cnpj" name="cnpj" placeholder="Digite o CNPJ"
+            inputmode="numeric" required>
+
+          <label for="benefEmp">Quantas pessoas entrarão no plano e quais são as idades?</label>
+          <textarea id="benefEmp" name="beneficiarios" rows="3" required
+            placeholder="Ex.: titular 35 anos, esposa 32 e filho 4"></textarea>
+
+          <label for="regiaoEmp">Qual região ou cidade você reside?</label>
+          <input id="regiaoEmp" name="regiao" required
+            placeholder="Ex.: Zona Leste de São Paulo">
+
+          <label for="redeEmp">Tem preferência por hospitais ou laboratórios?</label>
+          <textarea id="redeEmp" name="preferencias" rows="2"
+            placeholder="Se tiver, escreva os nomes"></textarea>
+
+          <label for="planoEmp">Já possui plano de saúde? Qual?</label>
+          <input id="planoEmp" name="planoAtual"
+            placeholder="Opcional">
+
+          <button class="main-whatsapp" type="submit">Enviar respostas pelo WhatsApp</button>
+          <button class="botao-voltar" type="button" data-voltar>Voltar às opções</button>
+        </form>
+
+        <form id="formSemCnpj" class="form-cotacao" hidden>
+          <h2>Plano sem CNPJ</h2>
+
+          <label for="formacao">Qual sua formação acadêmica e curso?</label>
+          <input id="formacao" name="formacao" required
+            placeholder="Ex.: graduação em Administração">
+
+          <label for="benefSem">Quantas pessoas entrarão no plano e quais são as idades?</label>
+          <textarea id="benefSem" name="beneficiarios" rows="3" required
+            placeholder="Informe as idades de todos"></textarea>
+
+          <label for="regiaoSem">Qual região ou cidade você reside?</label>
+          <input id="regiaoSem" name="regiao" required
+            placeholder="Ex.: Zona Leste de São Paulo">
+
+          <label for="redeSem">Tem preferência por hospitais ou laboratórios?</label>
+          <textarea id="redeSem" name="preferencias" rows="2"
+            placeholder="Se tiver, escreva os nomes"></textarea>
+
+          <label for="planoSem">Já possui plano de saúde? Qual?</label>
+          <input id="planoSem" name="planoAtual"
+            placeholder="Opcional">
+
+          <button class="main-whatsapp" type="submit">Enviar respostas pelo WhatsApp</button>
+          <button class="botao-voltar" type="button" data-voltar>Voltar às opções</button>
+        </form>
+
+        <form id="formTroca" class="form-cotacao" hidden>
+          <h2>Troca de plano de saúde</h2>
+
+          <label for="planoAtualTroca">Qual é seu plano atual?</label>
+          <input id="planoAtualTroca" name="planoAtual" required
+            placeholder="Operadora e nome do plano">
+
+          <label for="benefTroca">Quantas pessoas estão no plano e quais são as idades?</label>
+          <textarea id="benefTroca" name="beneficiarios" rows="3" required
+            placeholder="Informe as idades de todos"></textarea>
+
+          <label for="regiaoTroca">Qual região ou cidade você reside?</label>
+          <input id="regiaoTroca" name="regiao" required
+            placeholder="Ex.: Zona Leste de São Paulo">
+
+          <label for="redeTroca">Quais hospitais ou laboratórios gostaria de manter ou incluir?</label>
+          <textarea id="redeTroca" name="preferencias" rows="2"
+            placeholder="Se tiver preferência, escreva aqui"></textarea>
+
+          <label for="motivoTroca">O que gostaria de melhorar no plano atual?</label>
+          <textarea id="motivoTroca" name="motivo" rows="2"
+            placeholder="Ex.: preço, rede credenciada ou atendimento"></textarea>
+
+          <button class="main-whatsapp" type="submit">Enviar respostas pelo WhatsApp</button>
+          <button class="botao-voltar" type="button" data-voltar>Voltar às opções</button>
+        </form>
       </section>
 
       <section class="glass">
@@ -74,69 +151,8 @@
       <footer class="glass">
         <button id="shareButton" type="button">Compartilhar meu cartão</button>
         <p>© <span id="year"></span> André Linares Garbulho</p>
-        <p id="toast" role="status" aria-live="polite"></p>
-        <section class="glass" id="cotacao">
-  <h2>Vamos encontrar o plano ideal para você?</h2>
-  <p>Preencha as informações abaixo para eu preparar sua cotação.</p>
-
-  <form id="cotacaoForm">
-    <label for="temCnpj">Você possui CNPJ?</label>
-    <select id="temCnpj" name="temCnpj" required>
-      <option value="">Selecione</option>
-      <option value="Sim">Sim</option>
-      <option value="Não">Não</option>
-    </select>
-
-    <div id="campoCnpj" hidden>
-      <label for="cnpj">Número do CNPJ</label>
-      <input id="cnpj" name="cnpj" inputmode="numeric"
-        placeholder="Digite o CNPJ">
-    </div>
-
-    <div id="campoFormacao" hidden>
-      <label for="formacao">Qual sua formação acadêmica e curso?</label>
-      <input id="formacao" name="formacao"
-        placeholder="Ex.: graduação em Administração">
-    </div>
-
-    <label for="temDependentes">Você terá dependentes no plano?</label>
-    <select id="temDependentes" name="temDependentes" required>
-      <option value="">Selecione</option>
-      <option value="Sim">Sim</option>
-      <option value="Não">Não</option>
-    </select>
-
-    <label for="idades">Quais são as idades dos beneficiários?</label>
-    <textarea id="idades" name="idades" rows="2" required
-      placeholder="Ex.: titular 35 anos, esposa 32 e filho 4"></textarea>
-
-    <label for="preferencias">Tem preferência por hospitais ou laboratórios?</label>
-    <textarea id="preferencias" name="preferencias" rows="2"
-      placeholder="Se tiver, escreva os nomes aqui"></textarea>
-
-    <label for="regiao">Em qual região ou cidade você reside?</label>
-    <input id="regiao" name="regiao" required
-      placeholder="Ex.: Zona Leste de São Paulo">
-
-    <label for="temPlano">Você possui plano de saúde atualmente?</label>
-    <select id="temPlano" name="temPlano" required>
-      <option value="">Selecione</option>
-      <option value="Sim">Sim</option>
-      <option value="Não">Não</option>
-    </select>
-
-    <div id="campoPlano" hidden>
-      <label for="planoAtual">Qual é o plano atual?</label>
-      <input id="planoAtual" name="planoAtual"
-        placeholder="Nome da operadora ou plano">
-    </div>
-
-    <button type="submit" class="main-whatsapp">
-      Enviar respostas pelo WhatsApp
-    </button>
-  </form>
-</section>
       </footer>
+
     </div>
   </main>
 </body>
