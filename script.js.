@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       const linhas = [
-        "Olá, André! Gostaria de solicitar atendimento.",
+        "Olá, Andre! Gostaria de solicitar atendimento.",
         "",
         titulos[tipo],
         "",
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (compartilhar) {
     compartilhar.addEventListener("click", async function () {
       const dados = {
-        title: "André Linares | Planos de Saúde",
+        title: "Andre Linares | Planos de Saúde",
         text: "Conheça meu cartão digital e solicite sua cotação!",
         url: window.location.href
       };
