@@ -199,3 +199,139 @@ footer p {
     max-width: 100%;
   }
 }
+/* FORMULÁRIOS DE COTAÇÃO */
+.form-cotacao {
+  width: 100%;
+  max-width: 540px;
+  margin: 28px auto 0;
+  padding: 24px;
+  text-align: left;
+  background: rgba(7, 18, 35, 0.65);
+  border: 1px solid rgba(216, 181, 109, 0.35);
+  border-radius: 18px;
+}
+
+.form-cotacao[hidden] {
+  display: none !important;
+}
+
+.form-cotacao h2 {
+  color: #f0d28e;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.form-cotacao label {
+  display: block;
+  margin: 18px 0 7px;
+  color: #f4f6fa;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.form-cotacao input,
+.form-cotacao textarea,
+.form-cotacao select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+  color: #ffffff;
+  background: #182a43;
+  border: 1px solid #52637a;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-cotacao input:focus,
+.form-cotacao textarea:focus,
+.form-cotacao select:focus {
+  border-color: #d8b56d;
+  box-shadow: 0 0 0 3px rgba(216, 181, 109, 0.15);
+}
+
+.form-cotacao textarea {
+  min-height: 78px;
+  resize: vertical;
+}
+
+.form-cotacao input::placeholder,
+.form-cotacao textarea::placeholder {
+  color: #b8c4d4;
+}
+
+.form-cotacao button {
+  display: block;
+  width: 100%;
+  margin: 24px 0 0;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.form-cotacao .botao-voltar {
+  padding: 12px 18px;
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid #64748b;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 18px auto;
+  padding: 24px 18px;
+}
+
+.service-card h3,
+.service-card p {
+  margin: 0;
+}
+
+.service-card p {
+  line-height: 1.6;
+}
+
+.service-card button {
+  width: 100%;
+  max-width: 340px;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+button {
+  font-family: inherit;
+}
+
+button:focus-visible {
+  outline: 3px solid #f0d28e;
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .form-cotacao {
+    padding: 20px 15px;
+    margin-top: 20px;
+  }
+
+  .form-cotacao label {
+    font-size: 14px;
+  }
+
+  .form-cotacao input,
+  .form-cotacao textarea,
+  .form-cotacao select {
+    font-size: 16px;
+  }
+
+  .service-card {
+    padding: 20px 14px;
+  }
+}
