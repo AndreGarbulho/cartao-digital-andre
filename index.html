@@ -32,7 +32,7 @@
         <p>Escolha o atendimento que combina com você.</p>
 
         <div class="service-card">
-          <h3>Plano empresarial — tenho CNPJ</h3>
+          <h3>Plano empresarial - CNPJ</h3>
           <p>Para empresas, profissionais e seus beneficiários.</p>
           <button type="button" class="main-whatsapp"
             data-abrir="empresarial">Solicitar cotação empresarial</button>
@@ -56,8 +56,16 @@
           <h2>Cotação empresarial</h2>
 
           <label for="cnpj">Qual é o CNPJ?</label>
-          <input id="cnpj" name="cnpj" placeholder="Digite o CNPJ"
-            inputmode="numeric" required>
+<input
+  id="cnpj"
+  name="cnpj"
+  type="text"
+  inputmode="numeric"
+  autocomplete="off"
+  maxlength="18"
+  placeholder="Digite o CNPJ (00.000.000/0000-00)"
+  required
+>
 
           <label for="benefEmp">Quantas pessoas entrarão no plano e quais são as idades?</label>
           <textarea id="benefEmp" name="beneficiarios" rows="3" required
