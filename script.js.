@@ -1,123 +1,87 @@
-"use strict";
+document.addEventListener("DOMContentLoaded", function () {
+  const numero = "5511959434285";
 
-// ==========================================
-// CONFIGURAÇÕES DO CARTÃO DIGITAL
-// ==========================================
+  function configurarCampo(seletor, campoId, valorExibido) {
+    const select = document.querySelector(seletor);
+    const campo = document.getElementById(campoId);
 
-const CONFIG = {
-  whatsapp: "5511959434285",
-  telefone: "+5511959434285",
-  email: "andregarbulho@yahoo.com.br",
+    if (!select || !campo) return;
 
-  // Troque os links abaixo pelos endereços reais
-  // dos seus perfis antes de publicar.
-  redesSociais: {
-    instagram: "",
-    facebook: "",
-    youtube: ""
+    function atualizar() {
+      const mostrar = select.value === valorExibido;
+      campo.hidden = !mostrar;
+
+      campo.querySelectorAll("input, textarea, select").forEach(function (item) {
+        item.required = mostrar;
+        if (!mostrar) item.value = "";
+      });
+    }
+
+    select.addEventListener("change", atualizar);
+    atualizar();
   }
-};
 
-// ==========================================
-// LINK DO WHATSAPP
-// ==========================================
+  configurarCampo("#temCnpj", "campoCnpj", "Sim");
+  configurarCampo("#temCnpj", "campoFormacao", "Não");
+  configurarCampo("#temPlano", "campoPlano", "Sim");
 
-function criarLinkWhatsApp(mensagem) {
-  const texto = encodeURIComponent(mensagem);
+  const formulario = document.getElementById("cotacaoForm");
 
-  return https://wa.me/${CONFIG.whatsapp}?text=${texto};
-}
-
-// Todos os botões com data-message abrem o WhatsApp.
-document.querySelectorAll("[data-message]").forEach((botao) => {
-  const mensagem = botao.dataset.message;
-
-  botao.href = criarLinkWhatsApp(mensagem);
-  botao.target = "_blank";
-  botao.rel = "noopener noreferrer";
-});
-
-// ==========================================
-// E-MAIL E TELEFONE
-// ==========================================
-
-document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
-  link.href = tel:${CONFIG.telefone};
-});
-
-document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
-  link.href = mailto:${CONFIG.email};
-});
-
-// ==========================================
-// REDES SOCIAIS
-// ==========================================
-
-document.querySelectorAll("[data-social]").forEach((link) => {
-  const rede = link.dataset.social;
-  const endereco = CONFIG.redesSociais[rede];
-
-  if (endereco) {
-    link.href = endereco;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-  } else {
-    link.href = "#";
-    link.addEventListener("click", (evento) => {
+  if (formulario) {
+    formulario.addEventListener("submit", function (evento) {
       evento.preventDefault();
 
-      alert(
-        Para ativar o ${rede}, adicione o endereço do seu perfil no arquivo script.js.
+      const dados = new FormData(formulario);
+      const resposta = function (campo) {
+        return (dados.get(campo) || "").toString().trim() || "Não informado";
+      };
+
+      const mensagem = [
+        "Olá, André! Gostaria de solicitar uma cotação de plano de saúde.",
+        "",
+        "CNPJ: " + resposta("temCnpj"),
+        "Número do CNPJ: " + resposta("cnpj"),
+        "Formação acadêmica/curso: " + resposta("formacao"),
+        "Possui dependentes: " + resposta("temDependentes"),
+        "Idades dos beneficiários: " + resposta("idades"),
+        "Hospitais/laboratórios preferidos: " + resposta("preferencias"),
+        "Região/cidade: " + resposta("regiao"),
+        "Possui plano atualmente: " + resposta("temPlano"),
+        "Plano atual: " + resposta("planoAtual")
+      ].join("\n");
+
+      window.open(
+        "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensagem),
+        "_blank"
       );
     });
   }
-});
 
-// ==========================================
-// COMPARTILHAR CARTÃO DIGITAL
-// ==========================================
+  const ano = document.getElementById("year");
+  if (ano) ano.textContent = new Date().getFullYear();
 
-const botaoCompartilhar = document.getElementById("share-button");
+  const compartilhar = document.getElementById("shareButton");
 
-if (botaoCompartilhar) {
-  botaoCompartilhar.addEventListener("click", async () => {
-    const dados = {
-      title: "André Linares | Corretor de Planos de Saúde",
-      text:
-        "Conheça meu cartão digital e fale comigo sobre planos de saúde.",
-      url: window.location.href
-    };
+  if (compartilhar) {
+    compartilhar.addEventListener("click", async function () {
+      const dados = {
+        title: "André Linares | Planos de Saúde",
+        text: "Conheça meu cartão digital e solicite sua cotação!",
+        url: window.location.href
+      };
 
-    try {
       if (navigator.share) {
-        await navigator.share(dados);
-      } else if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(dados.url);
-
-        alert("Link do cartão copiado! Agora você pode compartilhar.");
+        try {
+          await navigator.share(dados);
+        } catch (erro) {}
       } else {
-        window.prompt(
-          "Copie o link do seu cartão digital:",
-          dados.url
-        );
+        try {
+          await navigator.clipboard.writeText(dados.url);
+          alert("Link do cartão copiado!");
+        } catch (erro) {
+          alert("Copie o link pela barra do navegador.");
+        }
       }
-    } catch (erro) {
-      if (erro.name !== "AbortError") {
-        window.prompt(
-          "Copie o link do seu cartão digital:",
-          dados.url
-        );
-      }
-    }
-  });
-}
-
-// ==========================================
-// ANO AUTOMÁTICO NO RODAPÉ
-// ==========================================
-
-const campoAno = document.getElementById("year");
-
-if (campoAno) {
-  campoAno.textContent = new Date().getFullYear();
-}
+    });
+  }
+});
