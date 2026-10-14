@@ -1,0 +1,123 @@
+"use strict";
+
+// ==========================================
+// CONFIGURAÇÕES DO CARTÃO DIGITAL
+// ==========================================
+
+const CONFIG = {
+  whatsapp: "5511959434285",
+  telefone: "+5511959434285",
+  email: "andregarbulho@yahoo.com.br",
+
+  // Troque os links abaixo pelos endereços reais
+  // dos seus perfis antes de publicar.
+  redesSociais: {
+    instagram: "",
+    facebook: "",
+    youtube: ""
+  }
+};
+
+// ==========================================
+// LINK DO WHATSAPP
+// ==========================================
+
+function criarLinkWhatsApp(mensagem) {
+  const texto = encodeURIComponent(mensagem);
+
+  return https://wa.me/${CONFIG.whatsapp}?text=${texto};
+}
+
+// Todos os botões com data-message abrem o WhatsApp.
+document.querySelectorAll("[data-message]").forEach((botao) => {
+  const mensagem = botao.dataset.message;
+
+  botao.href = criarLinkWhatsApp(mensagem);
+  botao.target = "_blank";
+  botao.rel = "noopener noreferrer";
+});
+
+// ==========================================
+// E-MAIL E TELEFONE
+// ==========================================
+
+document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+  link.href = tel:${CONFIG.telefone};
+});
+
+document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+  link.href = mailto:${CONFIG.email};
+});
+
+// ==========================================
+// REDES SOCIAIS
+// ==========================================
+
+document.querySelectorAll("[data-social]").forEach((link) => {
+  const rede = link.dataset.social;
+  const endereco = CONFIG.redesSociais[rede];
+
+  if (endereco) {
+    link.href = endereco;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  } else {
+    link.href = "#";
+    link.addEventListener("click", (evento) => {
+      evento.preventDefault();
+
+      alert(
+        Para ativar o ${rede}, adicione o endereço do seu perfil no arquivo script.js.
+      );
+    });
+  }
+});
+
+// ==========================================
+// COMPARTILHAR CARTÃO DIGITAL
+// ==========================================
+
+const botaoCompartilhar = document.getElementById("share-button");
+
+if (botaoCompartilhar) {
+  botaoCompartilhar.addEventListener("click", async () => {
+    const dados = {
+      title: "André Linares | Corretor de Planos de Saúde",
+      text:
+        "Conheça meu cartão digital e fale comigo sobre planos de saúde.",
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(dados);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(dados.url);
+
+        alert("Link do cartão copiado! Agora você pode compartilhar.");
+      } else {
+        window.prompt(
+          "Copie o link do seu cartão digital:",
+          dados.url
+        );
+      }
+    } catch (erro) {
+      if (erro.name !== "AbortError") {
+        window.prompt(
+          "Copie o link do seu cartão digital:",
+          dados.url
+        );
+      }
+    }
+  });
+}
+
+// ==========================================
+// ANO AUTOMÁTICO NO RODAPÉ
+// ==========================================
+
+const campoAno = document.getElementById("year");
+
+if (campoAno) {
+  campoAno.textContent = new Date().getFullYear();
+}
