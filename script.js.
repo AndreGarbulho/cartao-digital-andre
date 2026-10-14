@@ -1,64 +1,88 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const numero = "5511959434285";
+  const numeroWhatsApp = "5511959434285";
 
-  function configurarCampo(seletor, campoId, valorExibido) {
-    const select = document.querySelector(seletor);
-    const campo = document.getElementById(campoId);
+  const formularios = {
+    empresarial: document.getElementById("formEmpresarial"),
+    semCnpj: document.getElementById("formSemCnpj"),
+    troca: document.getElementById("formTroca")
+  };
 
-    if (!select || !campo) return;
-
-    function atualizar() {
-      const mostrar = select.value === valorExibido;
-      campo.hidden = !mostrar;
-
-      campo.querySelectorAll("input, textarea, select").forEach(function (item) {
-        item.required = mostrar;
-        if (!mostrar) item.value = "";
-      });
-    }
-
-    select.addEventListener("change", atualizar);
-    atualizar();
-  }
-
-  configurarCampo("#temCnpj", "campoCnpj", "Sim");
-  configurarCampo("#temCnpj", "campoFormacao", "Não");
-  configurarCampo("#temPlano", "campoPlano", "Sim");
-
-  const formulario = document.getElementById("cotacaoForm");
-
-  if (formulario) {
-    formulario.addEventListener("submit", function (evento) {
-      evento.preventDefault();
-
-      const dados = new FormData(formulario);
-      const resposta = function (campo) {
-        return (dados.get(campo) || "").toString().trim() || "Não informado";
-      };
-
-      const mensagem = [
-        "Olá, André! Gostaria de solicitar uma cotação de plano de saúde.",
-        "",
-        "CNPJ: " + resposta("temCnpj"),
-        "Número do CNPJ: " + resposta("cnpj"),
-        "Formação acadêmica/curso: " + resposta("formacao"),
-        "Possui dependentes: " + resposta("temDependentes"),
-        "Idades dos beneficiários: " + resposta("idades"),
-        "Hospitais/laboratórios preferidos: " + resposta("preferencias"),
-        "Região/cidade: " + resposta("regiao"),
-        "Possui plano atualmente: " + resposta("temPlano"),
-        "Plano atual: " + resposta("planoAtual")
-      ].join("\n");
-
-      window.open(
-        "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensagem),
-        "_blank"
-      );
+  function fecharFormularios() {
+    Object.values(formularios).forEach(function (formulario) {
+      formulario.hidden = true;
     });
   }
 
+  document.querySelectorAll("[data-abrir]").forEach(function (botao) {
+    botao.addEventListener("click", function () {
+      fecharFormularios();
+
+      const escolhido = formularios[botao.dataset.abrir];
+
+      if (escolhido) {
+        escolhido.hidden = false;
+        escolhido.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-voltar]").forEach(function (botao) {
+    botao.addEventListener("click", function () {
+      fecharFormularios();
+
+      document.getElementById("cotacao").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+  });
+
+  Object.entries(formularios).forEach(function ([tipo, formulario]) {
+    if (!formulario) return;
+
+    formulario.addEventListener("submit", function (evento) {
+      evento.preventDefault();
+
+      const campos = new FormData(formulario);
+      const obter = function (nome) {
+        return (campos.get(nome) || "").toString().trim() || "Não informado";
+      };
+
+      const titulos = {
+        empresarial: "Cotação de plano empresarial",
+        semCnpj: "Cotação de plano sem CNPJ",
+        troca: "Solicitação de troca de plano"
+      };
+
+      const linhas = [
+        "Olá, André! Gostaria de solicitar atendimento.",
+        "",
+        titulos[tipo],
+        "",
+        "CNPJ: " + obter("cnpj"),
+        "Formação acadêmica/curso: " + obter("formacao"),
+        "Plano atual: " + obter("planoAtual"),
+        "Beneficiários e idades: " + obter("beneficiarios"),
+        "Região/cidade: " + obter("regiao"),
+        "Hospitais e laboratórios preferidos: " + obter("preferencias"),
+        "O que gostaria de melhorar: " + obter("motivo")
+      ];
+
+      const mensagem = linhas.join("\n");
+      const url = "https://wa.me/" + numeroWhatsApp +
+        "?text=" + encodeURIComponent(mensagem);
+
+      window.open(url, "_blank");
+    });
+  });
+
   const ano = document.getElementById("year");
-  if (ano) ano.textContent = new Date().getFullYear();
+  if (ano) {
+    ano.textContent = new Date().getFullYear();
+  }
 
   const compartilhar = document.getElementById("shareButton");
 
@@ -73,7 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (navigator.share) {
         try {
           await navigator.share(dados);
-        } catch (erro) {}
+        } catch (erro) {
+          // O usuário pode cancelar o compartilhamento.
+        }
       } else {
         try {
           await navigator.clipboard.writeText(dados.url);
