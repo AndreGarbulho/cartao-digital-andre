@@ -75,6 +75,67 @@
         <button id="shareButton" type="button">Compartilhar meu cartão</button>
         <p>© <span id="year"></span> André Linares Garbulho</p>
         <p id="toast" role="status" aria-live="polite"></p>
+        <section class="glass" id="cotacao">
+  <h2>Vamos encontrar o plano ideal para você?</h2>
+  <p>Preencha as informações abaixo para eu preparar sua cotação.</p>
+
+  <form id="cotacaoForm">
+    <label for="temCnpj">Você possui CNPJ?</label>
+    <select id="temCnpj" name="temCnpj" required>
+      <option value="">Selecione</option>
+      <option value="Sim">Sim</option>
+      <option value="Não">Não</option>
+    </select>
+
+    <div id="campoCnpj" hidden>
+      <label for="cnpj">Número do CNPJ</label>
+      <input id="cnpj" name="cnpj" inputmode="numeric"
+        placeholder="Digite o CNPJ">
+    </div>
+
+    <div id="campoFormacao" hidden>
+      <label for="formacao">Qual sua formação acadêmica e curso?</label>
+      <input id="formacao" name="formacao"
+        placeholder="Ex.: graduação em Administração">
+    </div>
+
+    <label for="temDependentes">Você terá dependentes no plano?</label>
+    <select id="temDependentes" name="temDependentes" required>
+      <option value="">Selecione</option>
+      <option value="Sim">Sim</option>
+      <option value="Não">Não</option>
+    </select>
+
+    <label for="idades">Quais são as idades dos beneficiários?</label>
+    <textarea id="idades" name="idades" rows="2" required
+      placeholder="Ex.: titular 35 anos, esposa 32 e filho 4"></textarea>
+
+    <label for="preferencias">Tem preferência por hospitais ou laboratórios?</label>
+    <textarea id="preferencias" name="preferencias" rows="2"
+      placeholder="Se tiver, escreva os nomes aqui"></textarea>
+
+    <label for="regiao">Em qual região ou cidade você reside?</label>
+    <input id="regiao" name="regiao" required
+      placeholder="Ex.: Zona Leste de São Paulo">
+
+    <label for="temPlano">Você possui plano de saúde atualmente?</label>
+    <select id="temPlano" name="temPlano" required>
+      <option value="">Selecione</option>
+      <option value="Sim">Sim</option>
+      <option value="Não">Não</option>
+    </select>
+
+    <div id="campoPlano" hidden>
+      <label for="planoAtual">Qual é o plano atual?</label>
+      <input id="planoAtual" name="planoAtual"
+        placeholder="Nome da operadora ou plano">
+    </div>
+
+    <button type="submit" class="main-whatsapp">
+      Enviar respostas pelo WhatsApp
+    </button>
+  </form>
+</section>
       </footer>
     </div>
   </main>
